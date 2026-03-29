@@ -108,6 +108,12 @@ catalog:
       rules:
         - allow: [Template]
 
+    # Local template to trigger an existing GitHub Actions workflow
+    - type: file
+      target: ../../examples/github-actions-dispatch/template.yaml
+      rules:
+        - allow: [Template]
+
     # Local example organizational data
     - type: file
       target: ../../examples/org.yaml

@@ -1,0 +1,80 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: github-actions-dispatch-template
+  title: Trigger GitHub Action Workflow
+  description: Dispatch a workflow in an existing GitHub repository with runtime inputs
+spec:
+  owner: user:guest
+  type: automation
+
+  parameters:
+    - title: Workflow Target
+      required:
+        - repoUrl
+        - workflowId
+        - branchOrTagName
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          description: GitHub repository where the workflow exists
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+        workflowId:
+          title: Workflow ID or File Name
+          type: string
+          description: For example `build.yml` or numeric workflow ID
+        branchOrTagName:
+          title: Branch or Tag
+          type: string
+          default: main
+          description: Ref used when dispatching the workflow
+
+    - title: Workflow Inputs
+      required:
+        - environment
+        - serviceName
+      properties:
+        environment:
+          title: Environment
+          type: string
+          description: Must match the `workflow_dispatch` input key expected by your workflow
+          default: dev
+        serviceName:
+          title: Service Name
+          type: string
+          description: Must match the `workflow_dispatch` input key expected by your workflow
+
+  steps:
+    - id: dispatch-workflow
+      name: Dispatch Workflow
+      action: github:actions:dispatch
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        workflowId: ${{ parameters.workflowId }}
+        branchOrTagName: ${{ parameters.branchOrTagName }}
+        returnWorkflowRunDetails: true
+        workflowInputs:
+          environment: ${{ parameters.environment }}
+          serviceName: ${{ parameters.serviceName }}
+
+    - id: notify
+      name: Notify
+      action: notification:send
+      input:
+        recipients: entity
+        entityRefs:
+          - user:default/guest
+        title: 'GitHub workflow dispatched'
+        info: 'Workflow dispatch request submitted successfully'
+        severity: 'normal'
+
+  output:
+    links:
+      - title: Workflow Run
+        url: ${{ steps['dispatch-workflow'].output.workflowRunHtmlUrl }}
+      - title: Workflow API URL
+        url: ${{ steps['dispatch-workflow'].output.workflowRunUrl }}
