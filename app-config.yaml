@@ -77,8 +77,13 @@ auth:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
 
+
 scaffolder:
+  github:
+    # Optional: default owner/org for generated repos
+    defaultOrg: nagmanijobs
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
+
 
 catalog:
   import:
