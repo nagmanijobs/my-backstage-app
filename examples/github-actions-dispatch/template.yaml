@@ -35,16 +35,10 @@ spec:
 
     - title: Workflow Inputs
       required:
-        - environment
-        - serviceName
+        - Target_Repo_Name
       properties:
-        environment:
-          title: Environment
-          type: string
-          description: Must match the `workflow_dispatch` input key expected by your workflow
-          default: dev
-        serviceName:
-          title: Service Name
+        Target_Repo_Name:
+          title: Target Repo Name
           type: string
           description: Must match the `workflow_dispatch` input key expected by your workflow
 
@@ -58,8 +52,7 @@ spec:
         branchOrTagName: ${{ parameters.branchOrTagName }}
         returnWorkflowRunDetails: true
         workflowInputs:
-          environment: ${{ parameters.environment }}
-          serviceName: ${{ parameters.serviceName }}
+          Target_Repo_Name: ${{ parameters.Target_Repo_Name }}
 
     - id: notify
       name: Notify
