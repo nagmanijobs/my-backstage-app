@@ -3,13 +3,12 @@ import {
   sidebarConfig,
   useSidebarOpenState,
 } from '@backstage/core-components';
-import { makeStyles } from '@material-ui/core';
-import { LogoFull } from './LogoFull';
+import { makeStyles, Typography } from '@material-ui/core';
 import { LogoIcon } from './LogoIcon';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
-    width: sidebarConfig.drawerWidthClosed,
+    width: sidebarConfig.drawerWidthOpen,
     height: 3 * sidebarConfig.logoHeight,
     display: 'flex',
     flexFlow: 'row nowrap',
@@ -17,8 +16,19 @@ const useSidebarLogoStyles = makeStyles({
     marginBottom: -14,
   },
   link: {
-    width: sidebarConfig.drawerWidthClosed,
+    width: '100%',
     marginLeft: 24,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    color: '#7df3e1',
+  },
+  title: {
+    color: '#7df3e1',
+    fontWeight: 700,
+    fontSize: '0.9rem',
+    lineHeight: 1.1,
+    maxWidth: 160,
   },
 });
 
@@ -29,7 +39,12 @@ export const SidebarLogo = () => {
   return (
     <div className={classes.root}>
       <Link to="/" underline="none" className={classes.link} aria-label="Home">
-        {isOpen ? <LogoFull /> : <LogoIcon />}
+        <LogoIcon />
+        {isOpen ? (
+          <Typography variant="subtitle2" className={classes.title}>
+            SWIVEL Engineering Self Service Portal
+          </Typography>
+        ) : null}
       </Link>
     </div>
   );
