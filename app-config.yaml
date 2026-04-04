@@ -38,7 +38,8 @@ backend:
   # The production database configuration is stored in app-config.production.yaml
   database:
     client: better-sqlite3
-    connection: ':memory:'
+    connection:
+      directory: './backstage-db'
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
@@ -108,9 +109,27 @@ catalog:
       rules:
         - allow: [Template]
 
+    # Local .NET Hello World template for ECS
+    - type: file
+      target: ../../examples/dotnet-ecs-template/template.yaml
+      rules:
+        - allow: [Template]
+
     # Local template to trigger an existing GitHub Actions workflow
     - type: file
       target: ../../examples/github-actions-dispatch/template.yaml
+      rules:
+        - allow: [Template]
+
+    # Local GitHub Actions CI/CD template for .NET ECS deployments
+    - type: file
+      target: ../../examples/dotnet-ecs-cicd-template/template.yaml
+      rules:
+        - allow: [Template]
+
+    # Golden path: .NET ECS service + CI/CD pipeline in one shot
+    - type: file
+      target: ../../examples/dotnet-ecs-golden-path/template.yaml
       rules:
         - allow: [Template]
 

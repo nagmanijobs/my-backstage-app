@@ -1,0 +1,30 @@
+{
+  "family": "${{ values.taskDefinitionFamily }}",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::${{ values.awsAccountId }}:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "${{ values.containerName }}",
+      "image": "${{ values.awsAccountId }}.dkr.ecr.${{ values.awsRegion }}.amazonaws.com/${{ values.ecrRepository }}:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/${{ values.taskDefinitionFamily }}",
+          "awslogs-region": "${{ values.awsRegion }}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}

@@ -54,3 +54,7 @@ e2e-test-report/
 
 # Cache
 .cache/
+
+# Local Backstage sqlite databases
+backstage-db/
+packages/backend/backstage-db/

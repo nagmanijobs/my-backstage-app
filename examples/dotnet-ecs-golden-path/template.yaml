@@ -1,0 +1,133 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: dotnet-ecs-golden-path
+  title: 'Golden Path: .NET Service on ECS with CI/CD'
+  description: >
+    One-click golden path that creates a .NET 8 Hello World service repository,
+    includes Docker and ECS Fargate task definition, and sets up a full
+    GitHub Actions CI/CD pipeline to build, push to ECR, and deploy to ECS.
+  tags:
+    - dotnet
+    - ecs
+    - cicd
+    - golden-path
+spec:
+  owner: user:guest
+  type: service
+
+  parameters:
+    - title: Service Details
+      required:
+        - name
+      properties:
+        name:
+          title: Service Name
+          type: string
+          description: Unique name for your new service (used as repo name and assembly name)
+          ui:autofocus: true
+
+    - title: Repository
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            allowedOwners:
+              - nagmanijobs
+
+    - title: AWS Settings
+      required:
+        - awsAccountId
+        - awsRegion
+        - awsRoleArn
+      properties:
+        awsAccountId:
+          title: AWS Account ID
+          type: string
+          description: 12 digit AWS account ID (no hyphens)
+          pattern: '^\d{12}$'
+        awsRegion:
+          title: AWS Region
+          type: string
+          default: us-east-1
+        awsRoleArn:
+          title: GitHub OIDC IAM Role ARN
+          type: string
+          description: IAM role assumed by GitHub Actions to push ECR images and update ECS
+
+    - title: ECS & ECR Settings
+      required:
+        - ecrRepository
+        - ecsClusterName
+        - ecsServiceName
+        - taskDefinitionFamily
+        - containerName
+      properties:
+        ecrRepository:
+          title: ECR Repository Name
+          type: string
+          default: dotnet-hello-world
+        ecsClusterName:
+          title: ECS Cluster Name
+          type: string
+          default: my-ecs-cluster
+        ecsServiceName:
+          title: ECS Service Name
+          type: string
+          default: my-dotnet-service
+        taskDefinitionFamily:
+          title: ECS Task Definition Family
+          type: string
+          default: dotnet-hello-world-task
+        containerName:
+          title: Container Name
+          type: string
+          default: app
+
+  steps:
+    - id: fetch-base
+      name: Fetch Template Content
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          name: ${{ parameters.name }}
+          repoOwner: nagmanijobs
+          awsAccountId: ${{ parameters.awsAccountId }}
+          awsRegion: ${{ parameters.awsRegion }}
+          awsRoleArn: ${{ parameters.awsRoleArn }}
+          ecrRepository: ${{ parameters.ecrRepository }}
+          ecsClusterName: ${{ parameters.ecsClusterName }}
+          ecsServiceName: ${{ parameters.ecsServiceName }}
+          taskDefinitionFamily: ${{ parameters.taskDefinitionFamily }}
+          containerName: ${{ parameters.containerName }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        description: .NET Hello World ECS service — created via SWIVEL golden path
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        repoVisibility: public
+
+    - id: register
+      name: Register in Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

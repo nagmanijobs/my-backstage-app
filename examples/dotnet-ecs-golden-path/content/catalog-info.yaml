@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name | dump }}
+  description: .NET 8 Hello World service deployed on Amazon ECS via GitHub Actions CI/CD
+  annotations:
+    github.com/project-slug: ${{ values.repoOwner }}/${{ values.name }}
+spec:
+  type: service
+  owner: user:guest
+  lifecycle: experimental

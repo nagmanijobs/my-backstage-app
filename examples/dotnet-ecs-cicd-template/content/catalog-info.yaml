@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name | dump }}
+  description: GitHub Actions pipeline template for deploying .NET services to ECS
+spec:
+  type: automation
+  owner: user:guest
+  lifecycle: experimental

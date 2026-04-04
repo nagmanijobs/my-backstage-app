@@ -1,0 +1,119 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: dotnet-ecs-cicd-template
+  title: GitHub Actions CI/CD for .NET ECS Service
+  description: Creates a repository with GitHub Actions workflow to build and deploy a .NET service to Amazon ECS
+spec:
+  owner: user:guest
+  type: automation
+
+  parameters:
+    - title: Pipeline Repository
+      required:
+        - name
+        - repoUrl
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Name for the CI/CD pipeline component
+          ui:autofocus: true
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+    - title: Target Service Settings
+      required:
+        - serviceRepoName
+        - awsAccountId
+        - awsRegion
+        - awsRoleArn
+        - ecrRepository
+        - ecsClusterName
+        - ecsServiceName
+        - taskDefinitionFamily
+        - containerName
+      properties:
+        serviceRepoName:
+          title: Service Repository Name
+          type: string
+          description: GitHub repo that contains the .NET app source to build and deploy
+        awsAccountId:
+          title: AWS Account ID
+          type: string
+          description: 12 digit AWS account ID
+          pattern: '^\d{12}$'
+        awsRegion:
+          title: AWS Region
+          type: string
+          default: us-east-1
+        awsRoleArn:
+          title: AWS IAM Role ARN for GitHub OIDC
+          type: string
+          description: Role assumed by GitHub Actions to push to ECR and deploy to ECS
+        ecrRepository:
+          title: ECR Repository Name
+          type: string
+          default: dotnet-hello-world
+        ecsClusterName:
+          title: ECS Cluster Name
+          type: string
+          default: my-ecs-cluster
+        ecsServiceName:
+          title: ECS Service Name
+          type: string
+          default: my-dotnet-service
+        taskDefinitionFamily:
+          title: ECS Task Definition Family
+          type: string
+          default: dotnet-hello-world-task
+        containerName:
+          title: Container Name
+          type: string
+          default: app
+
+  steps:
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          name: ${{ parameters.name }}
+          serviceRepoName: ${{ parameters.serviceRepoName }}
+          awsAccountId: ${{ parameters.awsAccountId }}
+          awsRegion: ${{ parameters.awsRegion }}
+          awsRoleArn: ${{ parameters.awsRoleArn }}
+          ecrRepository: ${{ parameters.ecrRepository }}
+          ecsClusterName: ${{ parameters.ecsClusterName }}
+          ecsServiceName: ${{ parameters.ecsServiceName }}
+          taskDefinitionFamily: ${{ parameters.taskDefinitionFamily }}
+          containerName: ${{ parameters.containerName }}
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        description: GitHub Actions CI/CD pipeline for .NET ECS deployment
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

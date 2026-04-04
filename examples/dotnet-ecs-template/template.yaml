@@ -1,0 +1,109 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: dotnet-ecs-hello-template
+  title: .NET Hello World on Amazon ECS
+  description: Creates a .NET 8 Hello World API with Docker and ECS task definition
+spec:
+  owner: user:guest
+  type: service
+
+  parameters:
+    - title: Service Details
+      required:
+        - name
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:autofocus: true
+    - title: Repository
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+    - title: AWS ECS Settings
+      required:
+        - awsAccountId
+        - awsRegion
+        - ecrRepository
+        - ecsClusterName
+        - ecsServiceName
+        - taskDefinitionFamily
+        - containerName
+      properties:
+        awsAccountId:
+          title: AWS Account ID
+          type: string
+          description: 12 digit AWS account ID
+          pattern: '^\d{12}$'
+        awsRegion:
+          title: AWS Region
+          type: string
+          default: us-east-1
+        ecrRepository:
+          title: ECR Repository Name
+          type: string
+          default: dotnet-hello-world
+        ecsClusterName:
+          title: ECS Cluster Name
+          type: string
+          default: my-ecs-cluster
+        ecsServiceName:
+          title: ECS Service Name
+          type: string
+          default: my-dotnet-service
+        taskDefinitionFamily:
+          title: ECS Task Definition Family
+          type: string
+          default: dotnet-hello-world-task
+        containerName:
+          title: Container Name
+          type: string
+          default: app
+
+  steps:
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          name: ${{ parameters.name }}
+          awsAccountId: ${{ parameters.awsAccountId }}
+          awsRegion: ${{ parameters.awsRegion }}
+          ecrRepository: ${{ parameters.ecrRepository }}
+          ecsClusterName: ${{ parameters.ecsClusterName }}
+          ecsServiceName: ${{ parameters.ecsServiceName }}
+          taskDefinitionFamily: ${{ parameters.taskDefinitionFamily }}
+          containerName: ${{ parameters.containerName }}
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        description: .NET Hello World service for ECS created from Backstage template
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
