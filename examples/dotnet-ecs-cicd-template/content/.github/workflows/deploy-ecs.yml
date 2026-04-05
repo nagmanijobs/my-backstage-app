@@ -17,6 +17,8 @@ env:
   ECS_SERVICE: ${{ values.ecsServiceName }}
   ECS_TASK_DEFINITION: ecs/task-definition.json
   CONTAINER_NAME: ${{ values.containerName }}
+  LOG_GROUP_NAME: /ecs/${{ values.taskDefinitionFamily }}
+  LOG_RETENTION_DAYS: ${{ values.cloudWatchLogRetention }}
 
 jobs:
   deploy:
@@ -35,6 +37,11 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Ensure CloudWatch Log Group exists
+        run: |
+          aws logs create-log-group --log-group-name "{% raw %}${{ env.LOG_GROUP_NAME }}{% endraw %}" --region "{% raw %}${{ env.AWS_REGION }}{% endraw %}" || true
+          aws logs put-retention-policy --log-group-name "{% raw %}${{ env.LOG_GROUP_NAME }}{% endraw %}" --retention-in-days {% raw %}${{ env.LOG_RETENTION_DAYS }}{% endraw %} --region "{% raw %}${{ env.AWS_REGION }}{% endraw %}"
 
       - name: Build and push Docker image
         env:

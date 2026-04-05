@@ -89,6 +89,14 @@ spec:
           type: string
           default: app
 
+    - title: CloudWatch Logging
+      properties:
+        cloudWatchLogRetention:
+          title: CloudWatch Log Retention (days)
+          type: number
+          description: Number of days to retain logs in CloudWatch
+          default: 14
+
   steps:
     - id: fetch-service
       name: Fetch Service Boilerplate
@@ -122,6 +130,7 @@ spec:
           ecsServiceName: ${{ parameters.ecsServiceName }}
           taskDefinitionFamily: ${{ parameters.taskDefinitionFamily }}
           containerName: ${{ parameters.containerName }}
+          cloudWatchLogRetention: ${{ parameters.cloudWatchLogRetention }}
 
     - id: publish
       name: Publish to GitHub
