@@ -4,9 +4,8 @@ metadata:
   name: dotnet-ecs-golden-path
   title: 'Golden Path: .NET Service on ECS with CI/CD'
   description: >
-    One-click golden path that creates a .NET 8 Hello World service repository,
-    includes Docker and ECS Fargate task definition, and sets up a full
-    GitHub Actions CI/CD pipeline to build, push to ECR, and deploy to ECS.
+    One-click golden path that composes dotnet-ecs-template and
+    dotnet-ecs-cicd-template into a single repository bootstrap.
   tags:
     - dotnet
     - ecs
@@ -91,14 +90,30 @@ spec:
           default: app
 
   steps:
-    - id: fetch-base
-      name: Fetch Template Content
+    - id: fetch-service
+      name: Fetch Service Boilerplate
       action: fetch:template
       input:
-        url: ./content
+        url: https://github.com/nagmanijobs/my-backstage-app/tree/main/examples/dotnet-ecs-template/content
         values:
           name: ${{ parameters.name }}
-          repoOwner: nagmanijobs
+          awsAccountId: ${{ parameters.awsAccountId }}
+          awsRegion: ${{ parameters.awsRegion }}
+          ecrRepository: ${{ parameters.ecrRepository }}
+          ecsClusterName: ${{ parameters.ecsClusterName }}
+          ecsServiceName: ${{ parameters.ecsServiceName }}
+          taskDefinitionFamily: ${{ parameters.taskDefinitionFamily }}
+          containerName: ${{ parameters.containerName }}
+
+    - id: fetch-cicd-workflow
+      name: Fetch CI/CD Workflow
+      action: fetch:template
+      input:
+        url: https://github.com/nagmanijobs/my-backstage-app/tree/main/examples/dotnet-ecs-cicd-template/content/.github
+        targetPath: .github
+        values:
+          name: ${{ parameters.name }}
+          serviceRepoName: ${{ parameters.name }}
           awsAccountId: ${{ parameters.awsAccountId }}
           awsRegion: ${{ parameters.awsRegion }}
           awsRoleArn: ${{ parameters.awsRoleArn }}
