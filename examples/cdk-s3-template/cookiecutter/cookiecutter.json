@@ -1,0 +1,6 @@
+{
+  "name": "{{ cookiecutter.name }}",
+  "awsAccountId": "{{ cookiecutter.awsAccountId }}",
+  "awsRegion": "{{ cookiecutter.awsRegion }}",
+  "bucketName": "{{ cookiecutter.bucketName }}"
+}

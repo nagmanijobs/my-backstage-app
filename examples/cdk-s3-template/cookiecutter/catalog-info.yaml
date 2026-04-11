@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: {{ cookiecutter.name }}
+  description: AWS CDK repository that provisions S3 infrastructure
+  annotations:
+    github.com/project-slug: nagmanijobs/{{ cookiecutter.name }}
+spec:
+  type: service
+  lifecycle: experimental
+  owner: user:guest

@@ -133,6 +133,12 @@ catalog:
       rules:
         - allow: [Template]
 
+    # Local AWS CDK template for provisioning an S3 bucket
+    - type: file
+      target: ../../examples/cdk-s3-template/template.yaml
+      rules:
+        - allow: [Template]
+
     # Local example organizational data
     - type: file
       target: ../../examples/org.yaml

@@ -1,0 +1,92 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: cdk-s3-template
+  title: AWS CDK S3 Bucket Repository
+  description: Creates a separate repository with AWS CDK (TypeScript) code for an S3 bucket
+  tags:
+    - aws
+    - cdk
+    - cookiecutter
+    - s3
+    - infrastructure
+spec:
+  owner: user:guest
+  type: service
+
+  parameters:
+    - title: Repository
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            allowedOwners:
+              - nagmanijobs
+
+    - title: CDK Project Settings
+      required:
+        - name
+        - awsAccountId
+        - awsRegion
+        - bucketName
+      properties:
+        name:
+          title: Component Name
+          type: string
+          description: Name of the Backstage component and CDK app
+          ui:autofocus: true
+        awsAccountId:
+          title: AWS Account ID
+          type: string
+          description: 12 digit AWS account ID
+          pattern: '^\d{12}$'
+        awsRegion:
+          title: AWS Region
+          type: string
+          default: us-east-1
+        bucketName:
+          title: S3 Bucket Name
+          type: string
+          description: Globally unique lowercase bucket name
+          pattern: '^[a-z0-9.-]{3,63}$'
+
+  steps:
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:cookiecutter
+      input:
+        url: ./cookiecutter
+        values:
+          name: ${{ parameters.name }}
+          awsAccountId: ${{ parameters.awsAccountId }}
+          awsRegion: ${{ parameters.awsRegion }}
+          bucketName: ${{ parameters.bucketName }}
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        description: AWS CDK TypeScript repository for provisioning an S3 bucket
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

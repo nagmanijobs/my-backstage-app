@@ -3553,6 +3553,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/plugin-scaffolder-backend-module-cookiecutter@npm:^0.3.21":
+  version: 0.3.21
+  resolution: "@backstage/plugin-scaffolder-backend-module-cookiecutter@npm:0.3.21"
+  dependencies:
+    "@backstage/backend-defaults": "npm:^0.16.0"
+    "@backstage/backend-plugin-api": "npm:^1.8.0"
+    "@backstage/config": "npm:^1.3.6"
+    "@backstage/errors": "npm:^1.2.7"
+    "@backstage/integration": "npm:^2.0.0"
+    "@backstage/plugin-scaffolder-node": "npm:^0.13.0"
+    "@backstage/types": "npm:^1.2.2"
+    command-exists: "npm:^1.2.9"
+    fs-extra: "npm:^11.2.0"
+    winston: "npm:^3.2.1"
+    yaml: "npm:^2.0.0"
+    yn: "npm:^4.0.0"
+  checksum: 10c0/f1eae583947634d3104675de50a70113abfef4cbf262d6ab6c4386c36667128ae5886128877164b1ab607727bcc38bfd638204f4f11f2815f8369e83c9bdaede
+  languageName: node
+  linkType: hard
+
 "@backstage/plugin-scaffolder-backend-module-github@npm:^0.9.7":
   version: 0.9.7
   resolution: "@backstage/plugin-scaffolder-backend-module-github@npm:0.9.7"
@@ -15477,6 +15497,7 @@ __metadata:
     "@backstage/plugin-permission-node": "npm:^0.10.11"
     "@backstage/plugin-proxy-backend": "npm:^0.6.11"
     "@backstage/plugin-scaffolder-backend": "npm:^3.2.0"
+    "@backstage/plugin-scaffolder-backend-module-cookiecutter": "npm:^0.3.21"
     "@backstage/plugin-scaffolder-backend-module-github": "npm:^0.9.7"
     "@backstage/plugin-scaffolder-backend-module-notifications": "npm:^0.1.20"
     "@backstage/plugin-search-backend": "npm:^2.1.0"
@@ -16759,6 +16780,13 @@ __metadata:
   version: 2.0.3
   resolution: "comma-separated-tokens@npm:2.0.3"
   checksum: 10c0/91f90f1aae320f1755d6957ef0b864fe4f54737f3313bd95e0802686ee2ca38bff1dd381964d00ae5db42912dd1f4ae5c2709644e82706ffc6f6842a813cdd67
+  languageName: node
+  linkType: hard
+
+"command-exists@npm:^1.2.9":
+  version: 1.2.9
+  resolution: "command-exists@npm:1.2.9"
+  checksum: 10c0/75040240062de46cd6cd43e6b3032a8b0494525c89d3962e280dde665103f8cc304a8b313a5aa541b91da2f5a9af75c5959dc3a77893a2726407a5e9a0234c16
   languageName: node
   linkType: hard
 
