@@ -1,5 +1,6 @@
 import { createApp } from '@backstage/frontend-defaults';
 import catalogPlugin from '@backstage/plugin-catalog/alpha';
+import githubActionsPlugin from '@backstage-community/plugin-github-actions/alpha';
 import {
   PageBlueprint,
   createFrontendModule,
@@ -24,5 +25,5 @@ const githubPageModule = createFrontendModule({
 });
 
 export default createApp({
-  features: [catalogPlugin, githubPageModule, navModule],
+  features: [catalogPlugin, githubActionsPlugin, githubPageModule, navModule],
 });

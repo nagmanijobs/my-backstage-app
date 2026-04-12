@@ -60,6 +60,7 @@ proxy:
   #   '/test':
   #     target: 'https://example.com'
   #     changeOrigin: true
+  {}
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -75,6 +76,10 @@ techdocs:
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
   providers:
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
 
@@ -157,6 +162,7 @@ catalog:
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
+  {}
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:
