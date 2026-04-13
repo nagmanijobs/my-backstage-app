@@ -1,6 +1,7 @@
 import { createApp } from '@backstage/frontend-defaults';
 import catalogPlugin from '@backstage/plugin-catalog/alpha';
 import githubActionsPlugin from '@backstage-community/plugin-github-actions/alpha';
+import githubWorkflowsPlugin from '@veecode-platform/backstage-plugin-github-workflows/alpha';
 import {
   PageBlueprint,
   createFrontendModule,
@@ -25,5 +26,5 @@ const githubPageModule = createFrontendModule({
 });
 
 export default createApp({
-  features: [catalogPlugin, githubActionsPlugin, githubPageModule, navModule],
+  features: [catalogPlugin, githubActionsPlugin, githubWorkflowsPlugin, githubPageModule, navModule],
 });
