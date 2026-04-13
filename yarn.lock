@@ -7827,7 +7827,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/rest@npm:^19.0.3":
+"@octokit/rest@npm:^19.0.13, @octokit/rest@npm:^19.0.3":
   version: 19.0.13
   resolution: "@octokit/rest@npm:19.0.13"
   dependencies:
@@ -14408,6 +14408,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@veecode-platform/backstage-plugin-github-workflows-backend@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@veecode-platform/backstage-plugin-github-workflows-backend@npm:1.4.0"
+  dependencies:
+    "@backstage/backend-defaults": "npm:^0.16.0"
+    "@backstage/backend-plugin-api": "npm:^1.8.0"
+    "@backstage/catalog-client": "npm:^1.14.0"
+    "@backstage/core-plugin-api": "npm:^1.12.4"
+    "@backstage/errors": "npm:^1.2.7"
+    "@backstage/integration": "npm:^2.0.0"
+    "@backstage/plugin-catalog-node": "npm:^2.1.0"
+    "@backstage/types": "npm:^1.2.2"
+    "@octokit/rest": "npm:^19.0.13"
+    "@veecode-platform/github-workflows-common": "npm:^1.4.0"
+    express: "npm:^4.17.1"
+    express-promise-router: "npm:^4.1.0"
+    js-yaml: "npm:^4.1.0"
+    zod: "npm:^3.22.4"
+  checksum: 10c0/21c52e0b02a059d85516ca1f32c43b2af6b0d555f22869caebd0d71e749debeb84870d59a3ad8d2e3dfb66e14b5f9c1ae4651aea6c957a8683be97bfd035dbf9
+  languageName: node
+  linkType: hard
+
 "@veecode-platform/backstage-plugin-github-workflows@npm:^1.4.0":
   version: 1.4.0
   resolution: "@veecode-platform/backstage-plugin-github-workflows@npm:1.4.0"
@@ -15672,6 +15694,7 @@ __metadata:
     "@backstage/plugin-search-backend-node": "npm:^1.4.2"
     "@backstage/plugin-signals-backend": "npm:^0.3.13"
     "@backstage/plugin-techdocs-backend": "npm:^2.1.6"
+    "@veecode-platform/backstage-plugin-github-workflows-backend": "npm:^1.4.0"
     app: "link:../app"
     better-sqlite3: "npm:^12.0.0"
     node-gyp: "npm:^10.0.0"
@@ -19665,7 +19688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.14.0, express@npm:^4.22.0, express@npm:^4.22.1":
+"express@npm:^4.14.0, express@npm:^4.17.1, express@npm:^4.22.0, express@npm:^4.22.1":
   version: 4.22.1
   resolution: "express@npm:4.22.1"
   dependencies:
@@ -33761,7 +33784,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.76":
+"zod@npm:^3.22.4, zod@npm:^3.25.76":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c

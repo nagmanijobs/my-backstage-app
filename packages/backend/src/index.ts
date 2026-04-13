@@ -31,6 +31,9 @@ backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
 // See https://backstage.io/docs/auth/guest/provider
 
+// github workflows backend plugin
+backend.add(import('@veecode-platform/backstage-plugin-github-workflows-backend'));
+
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));
 backend.add(
@@ -59,7 +62,7 @@ backend.add(import('@backstage/plugin-search-backend-module-catalog'));
 backend.add(import('@backstage/plugin-search-backend-module-techdocs'));
 
 // kubernetes plugin
-backend.add(import('@backstage/plugin-kubernetes-backend'));
+// backend.add(import('@backstage/plugin-kubernetes-backend'));
 
 // notifications and signals plugins
 backend.add(import('@backstage/plugin-notifications-backend'));

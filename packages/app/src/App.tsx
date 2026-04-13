@@ -7,6 +7,7 @@ import {
   createFrontendModule,
 } from '@backstage/frontend-plugin-api';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import githubWorkflowsApiModule from './modules/githubWorkflowsApi';
 import { navModule } from './modules/nav';
 import { GitHubPage } from './components/GitHubPage';
 
@@ -26,5 +27,12 @@ const githubPageModule = createFrontendModule({
 });
 
 export default createApp({
-  features: [catalogPlugin, githubActionsPlugin, githubWorkflowsPlugin, githubPageModule, navModule],
+  features: [
+    catalogPlugin,
+    githubActionsPlugin,
+    githubWorkflowsPlugin,
+    githubWorkflowsApiModule,
+    githubPageModule,
+    navModule,
+  ],
 });
